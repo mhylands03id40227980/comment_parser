@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+import csv
+
 """This program parses various source files and extracts the comment texts.
 
 Currently supported languages:
@@ -64,6 +67,7 @@ class ParseError(Error):
 
 
 def extract_comments(filename: str,
+                     dirName: str,
                      mime: Optional[str] = None) -> List[common.Comment]:
   """Extracts and returns the comments from the given source file.
 
@@ -78,9 +82,16 @@ def extract_comments(filename: str,
   Raises:
     UnsupportedError: If filename is of an unsupported MIME type.
   """
-  with open(filename, 'r', encoding='utf-8') as code:
-    return extract_comments_from_str(code.read(), mime)
 
+  try:
+    with open(filename, 'r', encoding='utf-8') as code:
+        return extract_comments_from_str(code.read(), mime)
+  except:
+    with open('CSVs/'+dirName+'_IgnoredData.csv', 'a', newline='') as out:
+      writer = csv.writer(out)
+      writer.writerow([filename])
+    return ''
+   
 
 def extract_comments_from_str(code: str,
                               mime: Optional[str] = None
