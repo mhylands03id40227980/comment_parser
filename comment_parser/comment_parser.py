@@ -82,7 +82,7 @@ def extract_comments(filename: str,
   Raises:
     UnsupportedError: If filename is of an unsupported MIME type.
   """
-
+  #Any files that are not encoded in utf-8 are ignored and as such, added to IgnoredData
   try:
     with open(filename, 'r', encoding='utf-8') as code:
         return extract_comments_from_str(code.read(), mime)
